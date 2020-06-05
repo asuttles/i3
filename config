@@ -35,9 +35,16 @@ font pango:monospace 10
 # ==============================================================================
 #			  OPEN/CLOSE WINDOWS
 # ==============================================================================
+bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
+bindsym XF86AudioLowerVolume exec amixer set Master 5%-
+bindsym XF86AudioMute exec amixer set Master toggle
+
+# ==============================================================================
+#			  OPEN/CLOSE WINDOWS
+# ==============================================================================
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec st
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -55,9 +62,18 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
 # ==============================================================================
+#			      TTY-CLOCK
+# ==============================================================================
+#exec --no-startup-id st -g=40x14 -n clock -e tty-clock -c
+
+for_window [instance="clock"] floating enable;
+for_window [instance="clock"] move scratchpad;
+#bindsym $mod+Control+c [instance="clock"] scratchpad show, move position center
+
+# ==============================================================================
 #			  MOVE/FOCUS WINDOWS
 # ==============================================================================
-÷
+
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
@@ -110,21 +126,21 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # ==============================================================================
-#			    WINDOW BORDERS
+#		       WINDOW BORDERS and GAPS
 # ==============================================================================
 
 # Border Style for New Windows
-new_window pixel 2
+#new_window pixel 1
 new_float  normal
+for_window [class="^.*"] border pixel 2
 
 # Edge Borders
-hide_edge_borders none
+#hide_edge_borders none
 
-# ==============================================================================
-#			      SCRATCHPAD
-# ==============================================================================
-
-bindsym $mod+minus scratchpad show
+gaps inner 10
+gaps outer 5
+#gaps vertical 20
+#gaps horizontal 20
 
 # ==============================================================================
 #			     FRAME COLORS
@@ -156,8 +172,8 @@ bindsym $mod+0 workspace 10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2 
-bindsym $mod+Shift+3 move container to workspace 3 
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
 bindsym $mod+Shift+4 move container to workspace 4
 bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
@@ -166,9 +182,12 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
+# Cycle through active workspaces
+bindsym $mod+Tab workspace next
+
 # Configure Workspaces
 workspace_auto_back_and_forth yes
-workspace_layout stacked
+#workspace_layout stacked
 
 # ==============================================================================
 #			  SESSION MANAGEMENT
@@ -184,11 +203,9 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 
-
 # Define Where Apps Reside By Default
-#exec --no-startup-id compton --config ~/.config/compton.conf
-exec --no-startup-id emacs
-exec --no-startup-id firefox
+#exec --no-startup-id emacs
+#exec --no-startup-id firefox
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -221,4 +238,9 @@ bindsym $mod+r mode "resize"
 bar {
         status_command i3status
         tray_output primary
+	separator_symbol "|"
+	colors {
+	       statusline "#008888"
+	       separator "#666666"
+	}
 }
