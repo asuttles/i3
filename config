@@ -35,16 +35,34 @@ font pango:monospace 10
 # ==============================================================================
 #			  OPEN/CLOSE WINDOWS
 # ==============================================================================
-bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
-bindsym XF86AudioLowerVolume exec amixer set Master 5%-
-bindsym XF86AudioMute exec amixer set Master toggle
+
+# FreeBSD
+bindsym XF86AudioRaiseVolume exec mixer vol +5 & killall -USR1 i3status
+bindsym XF86AudioLowerVolume exec mixer vol -5 & killall -USR1 i3status
+bindsym XF86AudioMute exec ~/bin/toggleVol.sh 1>/dev/null & killall -USR1 i3status
+
+# Linux
+#bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
+#bindsym XF86AudioLowerVolume exec amixer set Master 5%-
+#bindsym XF86AudioMute exec amixer set Master toggle
+
+# ==============================================================================
+#			 LOCK COMPUTER SCREEN
+# ==============================================================================
+bindsym $mod+Control+l exec i3lock -i /home/acs/images/wood-black.png
+
+# ==============================================================================
+#			OPEN FREEBSD HANDBOOK
+# ==============================================================================
+bindsym $mod+Shift+h exec firefox /usr/local/share/doc/freebsd/handbook/index.html 2>/dev/null
+bindsym $mod+t exec transset -n "Mozilla"
 
 # ==============================================================================
 #			  OPEN/CLOSE WINDOWS
 # ==============================================================================
 
 # start a terminal
-bindsym $mod+Return exec st
+bindsym $mod+Return exec $TERM_EXE
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -64,7 +82,7 @@ bindsym $mod+minus scratchpad show
 # ==============================================================================
 #			      TTY-CLOCK
 # ==============================================================================
-#exec --no-startup-id st -g=40x14 -n clock -e tty-clock -c
+exec --no-startup-id $TERM_EXE -g=40x14 -n clock -e tty-clock -c
 
 for_window [instance="clock"] floating enable;
 for_window [instance="clock"] move scratchpad;
@@ -74,7 +92,7 @@ for_window [instance="clock"] move scratchpad;
 #			  MOVE/FOCUS WINDOWS
 # ==============================================================================
 
-# change focus
+# change focus - vi keys
 bindsym $mod+j focus left
 bindsym $mod+k focus down
 bindsym $mod+l focus up
